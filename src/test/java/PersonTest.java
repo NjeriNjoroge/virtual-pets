@@ -1,7 +1,11 @@
 import org.junit.*;
 import static org.junit.Assert.*;
+import org.sql2o.*;
 
 public class PersonTest {
+
+  @Rule
+    public DatabaseRule database = new DatabaseRule();
 
 //instantiates
   @Test
@@ -29,6 +33,14 @@ public void equals_returnsTrueIfNameAndEmailAreSame_true() {
   Person firstPerson = new Person("Henry", "[email protected]");
   Person anotherPerson = new Person("Henry", "[email protected]");
   assertTrue(firstPerson.equals(anotherPerson));
-} 
+}
+
+//saving person object to DB
+@Test
+public void save_insertsObjectIntoDatabase_Person() {
+  Person testPerson = new Person("Henry", "[email protected]");
+  testPerson.save();
+  assertTrue(Person.all().get(0).equals(testPerson));
+}
 
 }
