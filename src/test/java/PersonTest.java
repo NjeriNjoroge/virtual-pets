@@ -54,4 +54,14 @@ public void all_returnsAllInstancesOfPerson_true() {
   assertEquals(true, Person.all().get(1).equals(secondPerson));
 }
 
+//gathering id values assigned in the DB and associating them with the corresponding Person Object
+//update: altered the save method to gather database-assigned ID
+@Test
+public void save_assignsIdToObject() {
+  Person testPerson = new Person("Henry", "henry@henry.com");
+  testPerson.save();
+  Person savedPerson = Person.all().get(0);
+  assertEquals(testPerson.getId(), savedPerson.getId());
+}
+
 }

@@ -1,8 +1,11 @@
 import org.sql2o.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Person {
   private String name;
   private String email;
+  private int id;
 
   public Person(String name, String email) {
     this.name = name;
@@ -19,6 +22,11 @@ public class Person {
     return email;
   }
 
+//gets Id
+public int getId() {
+   return id;
+ }
+ 
 //overrides equals
 @Override
 public boolean equals(Object otherPerson){
@@ -31,14 +39,16 @@ if (!(otherPerson instanceof Person)) {
 }
 }
 
-//saving to DB
+//saving to DB.
+//altered the save method to gather database-assigned ID
 public void save() {
   try(Connection con = DB.sql2o.open()) {
     String sql = "INSERT INTO persons (name, email) VALUES (:name, :email)";
-    con.createQuery(sql)
+    this.id = (int) con.createQuery(sql, true)
       .addParameter("name", this.name)
       .addParameter("email", this.email)
-      .executeUpdate();
+      .executeUpdate()
+      .getKey();
   }
 }
 
