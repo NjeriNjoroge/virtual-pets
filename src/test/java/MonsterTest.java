@@ -64,5 +64,15 @@ public void all_returnsAllInstancesOfMonster_true() {
   assertEquals(true, Monster.all().get(1).equals(secondMonster));
 }
 
+//finding monsters based on id
+@Test
+public void find_returnsMonsterWithSameId_secondMonster() {
+  Monster firstMonster = new Monster("Bubbles", 1);
+  firstMonster.save();
+  Monster secondMonster = new Monster("Spud", 3);
+  secondMonster.save();
+  assertEquals(Monster.find(secondMonster.getId()), secondMonster);
+}
+
 
 }
