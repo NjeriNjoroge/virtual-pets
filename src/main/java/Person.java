@@ -26,7 +26,7 @@ public class Person {
 public int getId() {
    return id;
  }
- 
+
 //overrides equals
 @Override
 public boolean equals(Object otherPerson){
@@ -57,6 +57,17 @@ public static List<Person> all() {
   String sql = "SELECT * FROM persons";
   try(Connection con = DB.sql2o.open()) {
    return con.createQuery(sql).executeAndFetch(Person.class);
+  }
+}
+
+//finds Person based on their ID
+public static Person find(int id) {
+  try(Connection con = DB.sql2o.open()) {
+    String sql = "SELECT * FROM persons where id=:id";
+    Person person = con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetchFirst(Person.class);
+    return person;
   }
 }
 
