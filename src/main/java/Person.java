@@ -42,4 +42,12 @@ public void save() {
   }
 }
 
+//returns all DB entries
+public static List<Person> all() {
+  String sql = "SELECT * FROM persons";
+  try(Connection con = DB.sql2o.open()) {
+   return con.createQuery(sql).executeAndFetch(Person.class);
+  }
+}
+
 }
