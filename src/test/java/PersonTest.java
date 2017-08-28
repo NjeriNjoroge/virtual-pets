@@ -23,4 +23,12 @@ public void getEmail_personInstantiatesWithEmail_String() {
   assertEquals("[email protected]", testPerson.getEmail());
 }
 
+//overrides equals
+@Test
+public void equals_returnsTrueIfNameAndEmailAreSame_true() {
+  Person firstPerson = new Person("Henry", "[email protected]");
+  Person anotherPerson = new Person("Henry", "[email protected]");
+  assertTrue(firstPerson.equals(anotherPerson));
+} 
+
 }
