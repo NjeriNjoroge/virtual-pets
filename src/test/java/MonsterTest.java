@@ -36,4 +36,13 @@ public void equals_returnsTrueIfNameAndPersonIdAreSame_true() {
   assertTrue(testMonster.equals(anotherMonster));
 }
 
+//saves Monsters to the DB
+@Test
+public void save_returnsTrueIfDescriptionsAretheSame() {
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.save();
+  assertTrue(Monster.all().get(0).equals(testMonster));
+}
+
+
 }
