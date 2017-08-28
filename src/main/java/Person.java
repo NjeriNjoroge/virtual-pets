@@ -71,4 +71,14 @@ public static Person find(int id) {
   }
 }
 
+//returns all monster objects belonging to a person
+public List<Monster> getMonsters() {
+  try(Connection con = DB.sql2o.open()) {
+    String sql = "SELECT * FROM monsters where personId=:id";
+    return con.createQuery(sql)
+      .addParameter("id", this.id)
+      .executeAndFetch(Monster.class);
+  }
+}
+
 }

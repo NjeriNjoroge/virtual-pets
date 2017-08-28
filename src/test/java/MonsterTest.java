@@ -74,5 +74,18 @@ public void find_returnsMonsterWithSameId_secondMonster() {
   assertEquals(Monster.find(secondMonster.getId()), secondMonster);
 }
 
+//associating a person with many monsters
+@Test
+public void save_savesPersonIdIntoDB_true() {
+  Person testPerson = new Person("Henry", "henry@henry.com");
+  testPerson.save();
+  Monster testMonster = new Monster("Bubbles", testPerson.getId());
+  testMonster.save();
+  Monster savedMonster = Monster.find(testMonster.getId());
+  assertEquals(savedMonster.getPersonId(), testPerson.getId());
+}
+
+
+
 
 }

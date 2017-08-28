@@ -8,12 +8,15 @@ public class DatabaseRule extends ExternalResource {
     DB.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/virtual_pets_test", "gnjoroge", "1234");
   }
 
+//updated so that it empties the monster table after each spec
   @Override
-  protected void after() {
-    try(Connection con = DB.sql2o.open()) {
-      String deletePersonsQuery = "DELETE FROM persons *;";
-      con.createQuery(deletePersonsQuery).executeUpdate();
-    }
+protected void after() {
+  try(Connection con = DB.sql2o.open()) {
+    String deletePersonsQuery = "DELETE FROM persons *;";
+    String deleteMonstersQuery = "DELETE FROM monsters *;";
+    con.createQuery(deletePersonsQuery).executeUpdate();
+    con.createQuery(deleteMonstersQuery).executeUpdate();
   }
+}
 
 }
