@@ -60,21 +60,53 @@ public int getFoodLevel(){
  }
 
 //checking playLevels
+//ensure our play() method accurately updates the Monster's lastPlayed column in the database
 public void play(){
-   playLevel++;
- }
+  if (playLevel >= MAX_PLAY_LEVEL){
+    throw new UnsupportedOperationException("You cannot play with monster anymore!");
+  }
+  try(Connection con = DB.sql2o.open()) {
+    String sql = "UPDATE monsters SET lastplayed = now() WHERE id = :id";
+    con.createQuery(sql)
+      .addParameter("id", id)
+      .executeUpdate();
+    }
+  playLevel++;
+}
 
  //retrieves the birthday value
  public Timestamp getBirthday(){
    return birthday;
  }
 
+ //gets the time lastSlept
+ public Timestamp getLastSlept(){
+  return lastSlept;
+}
+
+//gets the time lastAte
+public Timestamp getLastAte(){
+   return lastAte;
+ }
+
+//gets the time lastPlayed
+public Timestamp getLastPlayed(){
+   return lastPlayed;
+ }
+
  //putting monster to sleep
  //updated: prevents sleep levels from increasing
+ //updated to insert new timestamp in the Monsters lastSlept column
  public void sleep(){
    if (sleepLevel >= MAX_SLEEP_LEVEL){
      throw new UnsupportedOperationException("You cannot make your monster sleep anymore!");
    }
+   try(Connection con = DB.sql2o.open()) {
+     String sql = "UPDATE monsters SET lastslept = now() WHERE id = :id";
+     con.createQuery(sql)
+       .addParameter("id", id)
+       .executeUpdate();
+     }
    sleepLevel++;
  }
 
@@ -141,12 +173,20 @@ public static Monster find(int id) {
 
 //updated the feed method
 //throws the exception when a user attempts to raise a pet's foodLevel above the upper limit
+//updated to record lastAte in DB
 public void feed(){
   if (foodLevel >= MAX_FOOD_LEVEL){
     throw new UnsupportedOperationException("You cannot feed your monster anymore!");
   }
+  try(Connection con = DB.sql2o.open()) {
+    String sql = "UPDATE monsters SET lastate = now() WHERE id = :id";
+    con.createQuery(sql)
+      .addParameter("id", id)
+      .executeUpdate();
+    }
   foodLevel++;
 }
+
 
 
 

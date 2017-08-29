@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 import org.sql2o.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.text.DateFormat;
 
 public class MonsterTest {
 
@@ -209,7 +210,41 @@ public void save_recordsTimeOfCreationInDatabase() {
   testMonster.save();
   Timestamp savedMonsterBirthday = Monster.find(testMonster.getId()).getBirthday();
   Timestamp rightNow = new Timestamp(new Date().getTime());
-  assertEquals(rightNow, savedMonsterBirthday);
+  assertEquals(rightNow.getDay(), savedMonsterBirthday.getDay());
 }
+
+//asserts the sleep() method accurately updates the lastSlept value in DB
+@Test
+public void sleep_recordsTimeLastSleptInDatabase() {
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.save();
+  testMonster.sleep();
+  Timestamp savedMonsterLastSlept = Monster.find(testMonster.getId()).getLastSlept();
+  Timestamp rightNow = new Timestamp(new Date().getTime());
+  assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedMonsterLastSlept));
+}
+
+//asserts the lastAte() method accurately updates value in DB
+@Test
+public void feed_recordsTimeLastAteInDatabase() {
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.save();
+  testMonster.feed();
+  Timestamp savedMonsterLastAte = Monster.find(testMonster.getId()).getLastAte();
+  Timestamp rightNow = new Timestamp(new Date().getTime());
+  assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedMonsterLastAte));
+}
+
+//ensure our play() method accurately updates the Monster's lastPlayed column in the database
+@Test
+public void play_recordsTimeLastPlayedInDatabase() {
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.save();
+  testMonster.play();
+  Timestamp savedMonsterLastPlayed = Monster.find(testMonster.getId()).getLastPlayed();
+  Timestamp rightNow = new Timestamp(new Date().getTime());
+  assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedMonsterLastPlayed));
+}
+
 
 }
