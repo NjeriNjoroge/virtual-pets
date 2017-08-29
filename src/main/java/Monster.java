@@ -60,9 +60,13 @@ public void play(){
  }
 
  //putting monster to sleep
+ //updated: prevents sleep levels from increasing
  public void sleep(){
-  sleepLevel++;
-}
+   if (sleepLevel >= MAX_SLEEP_LEVEL){
+     throw new UnsupportedOperationException("You cannot make your monster sleep anymore!");
+   }
+   sleepLevel++;
+ }
 
 //checks whether the monster has died
 public boolean isAlive() {

@@ -179,4 +179,25 @@ public void feed_throwsExceptionIfFoodLevelIsAtMaxValue(){
  }
 }
 
+//confirms we receive an exception if we attempt to raise our Monsters sleepLevel
+@Test(expected = UnsupportedOperationException.class)
+public void sleep_throwsExceptionIfSleepLevelIsAtMaxValue(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_SLEEP_LEVEL); i++){
+    testMonster.sleep();
+  }
+}
+
+//tests that throwing the above exception prevents sleepLevel from increasing beyond its constant
+@Test
+public void monster_sleepLevelCannotGoBeyondMaxValue(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_SLEEP_LEVEL); i++){
+    try {
+      testMonster.sleep();
+    } catch (UnsupportedOperationException exception){ }
+  }
+  assertTrue(testMonster.getSleepLevel() <= Monster.MAX_SLEEP_LEVEL);
+}
+
 }
