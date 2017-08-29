@@ -1,6 +1,7 @@
 import org.sql2o.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 public class Monster {
   private String name;
@@ -9,6 +10,10 @@ public class Monster {
   private int foodLevel;
   private int sleepLevel;
   private int playLevel;
+  private Timestamp birthday;
+  private Timestamp lastSlept;
+  private Timestamp lastAte;
+  private Timestamp lastPlayed;
 
   public static final int MAX_FOOD_LEVEL = 3;
   public static final int MAX_SLEEP_LEVEL = 8;
@@ -59,6 +64,11 @@ public void play(){
    playLevel++;
  }
 
+ //retrieves the birthday value
+ public Timestamp getBirthday(){
+   return birthday;
+ }
+
  //putting monster to sleep
  //updated: prevents sleep levels from increasing
  public void sleep(){
@@ -98,9 +108,10 @@ public boolean equals(Object otherMonster){
 }
 
 //saving to DB
- public void save() {
+//updated to include the birthdate of every new monster
+public void save() {
   try(Connection con = DB.sql2o.open()) {
-    String sql = "INSERT INTO monsters (name, personid) VALUES (:name, :personId)";
+    String sql = "INSERT INTO monsters (name, personId, birthday) VALUES (:name, :personId, now())";
     this.id = (int) con.createQuery(sql, true)
       .addParameter("name", this.name)
       .addParameter("personId", this.personId)
