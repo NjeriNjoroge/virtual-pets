@@ -18,6 +18,10 @@ public class Monster {
   public Monster(String name, int personId) {
     this.name = name;
     this.personId = personId;
+    playLevel = MAX_PLAY_LEVEL / 2;
+    sleepLevel = MAX_SLEEP_LEVEL / 2;
+    foodLevel = MAX_FOOD_LEVEL / 2;
+
   }
 
 //gets Monster name
@@ -35,6 +39,52 @@ public class Monster {
    return id;
  }
 
+//gets playLevel
+public int getPlayLevel() {
+  return playLevel;
+}
+
+//gets sleepLevel
+public int getSleepLevel(){
+  return sleepLevel;
+}
+
+//gets foodLevel
+public int getFoodLevel(){
+   return foodLevel;
+ }
+
+//checking playLevels
+public void play(){
+   playLevel++;
+ }
+
+ //putting monster to sleep
+ public void sleep(){
+  sleepLevel++;
+}
+
+//feeding the monsters
+public void feed(){
+   foodLevel++;
+ }
+
+//checks whether the monster has died
+public boolean isAlive() {
+  if (foodLevel <= MIN_ALL_LEVELS ||
+  playLevel <= MIN_ALL_LEVELS ||
+  sleepLevel <= MIN_ALL_LEVELS) {
+    return false;
+  }
+  return true;
+}
+
+//confirms the isAlive() method can determine when monster is dead
+public void depleteLevels(){
+  playLevel--;
+  foodLevel--;
+  sleepLevel--;
+}
 
 //overrides equals
 @Override
@@ -78,5 +128,15 @@ public static Monster find(int id) {
     return monster;
   }
 }
+
+//throws the exception when a user attempts to raise a pet's foodLevel above the upper limit
+public void feed(){
+  if (foodLevel >= MAX_FOOD_LEVEL){
+    throw new UnsupportedOperationException("You cannot feed your monster anymore!");
+  }
+  foodLevel++;
+}
+
+
 
 }

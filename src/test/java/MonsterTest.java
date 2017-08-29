@@ -85,7 +85,95 @@ public void save_savesPersonIdIntoDB_true() {
   assertEquals(savedMonster.getPersonId(), testPerson.getId());
 }
 
+//instantiating monsters with half full levels
+@Test
+public void monster_instantiatesWithHalfFullPlayLevel(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  assertEquals(testMonster.getPlayLevel(), (Monster.MAX_PLAY_LEVEL / 2));
+}
 
+//instantiates with half-full sleepLevel
+@Test
+public void monster_instantiatesWithHalfFullSleepLevel(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  assertEquals(testMonster.getSleepLevel(), (Monster.MAX_SLEEP_LEVEL / 2));
+}
 
+//instantiates with half-full food level
+@Test
+public void monster_instantiatesWithHalfFullFoodLevel(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  assertEquals(testMonster.getFoodLevel(), (Monster.MAX_FOOD_LEVEL / 2));
+}
+
+//checks whether the monster has died
+@Test
+public void isAlive_confirmsMonsterIsAliveIfAllLevelsAboveMinimum_true(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  assertEquals(testMonster.isAlive(), true);
+}
+
+//confirms the isAlive() method can determine when monster is dead
+@Test
+public void depleteLevels_reducesAllLevels(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.depleteLevels();
+  assertEquals(testMonster.getFoodLevel(), (Monster.MAX_FOOD_LEVEL / 2) - 1);
+  assertEquals(testMonster.getSleepLevel(), (Monster.MAX_SLEEP_LEVEL / 2) - 1);
+  assertEquals(testMonster.getPlayLevel(), (Monster.MAX_PLAY_LEVEL / 2) - 1);
+}
+
+//confirms the isAlive() method can determine when monster is dead
+@Test
+public void isAlive_recognizesMonsterIsDeadWhenLevelsReachMinimum_false(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  for(int i = Monster.MIN_ALL_LEVELS; i <= Monster.MAX_FOOD_LEVEL; i++){
+    testMonster.depleteLevels();
+  }
+  assertEquals(testMonster.isAlive(), false);
+}
+
+//allows users to interact with their pet to increase their levels
+@Test
+public void play_increasesMonsterPlayLevel(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.play();
+  assertTrue(testMonster.getPlayLevel() > (Monster.MAX_PLAY_LEVEL / 2));
+}
+
+//putting Monsters to sleep
+@Test
+public void sleep_increasesMonsterSleepLevel(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.sleep();
+  assertTrue(testMonster.getSleepLevel() > (Monster.MAX_SLEEP_LEVEL / 2));
+}
+
+//feeding the monsters
+@Test
+public void feed_increasesMonsterFoodLevel(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.feed();
+  assertTrue(testMonster.getFoodLevel() > (Monster.MAX_FOOD_LEVEL / 2));
+}
+
+//when user tries to feed the monster to much
+@Test
+ public void monster_foodLevelCannotGoBeyondMaxValue(){
+   Monster testMonster = new Monster("Bubbles", 1);
+   for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL + 2); i++){
+     testMonster.feed();
+   }
+   assertTrue(testMonster.getFoodLevel() <= Monster.MAX_FOOD_LEVEL);
+ }
+
+//confirms we receive an exception if we attempt to raise our Monsters foodLevel
+@Test (expected = UnsupportedOperationException.class)
+public void feed_throwsExceptionIfFoodLevelIsAtMaxValue(){
+ Monster testMonster = new Monster("Bubbles", 1);
+ for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL); i++){
+   testMonster.feed();
+ }
+}
 
 }
