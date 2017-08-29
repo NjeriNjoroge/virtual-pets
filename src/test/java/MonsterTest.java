@@ -246,5 +246,30 @@ public void play_recordsTimeLastPlayedInDatabase() {
   assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedMonsterLastPlayed));
 }
 
+//integrating a basic Timer
+@Test
+public void timer_executesDepleteLevelsMethod() {
+  Monster testMonster = new Monster("Bubbles", 1);
+  int firstPlayLevel = testMonster.getPlayLevel();
+  testMonster.startTimer();
+  try {
+    Thread.sleep(6000);
+  } catch (InterruptedException exception){}
+  int secondPlayLevel = testMonster.getPlayLevel();
+  assertTrue(firstPlayLevel > secondPlayLevel);
+}
+
+//tests that the timer halts when one of the Monster's levels reaches 0
+@Test
+public void timer_haltsAfterMonsterDies() {
+  Monster testMonster = new Monster("Bubbles", 1);
+  testMonster.startTimer();
+  try {
+    Thread.sleep(6000);
+  } catch (InterruptedException exception){}
+  assertFalse(testMonster.isAlive());
+  assertTrue(testMonster.getFoodLevel() >= 0);
+}
+
 
 }

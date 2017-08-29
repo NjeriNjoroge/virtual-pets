@@ -2,6 +2,8 @@ import org.sql2o.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Monster {
   private String name;
@@ -14,6 +16,7 @@ public class Monster {
   private Timestamp lastSlept;
   private Timestamp lastAte;
   private Timestamp lastPlayed;
+  private Timer timer;
 
   public static final int MAX_FOOD_LEVEL = 3;
   public static final int MAX_SLEEP_LEVEL = 8;
@@ -23,6 +26,7 @@ public class Monster {
   public Monster(String name, int personId) {
     this.name = name;
     this.personId = personId;
+    timer = new Timer();
     playLevel = MAX_PLAY_LEVEL / 2;
     sleepLevel = MAX_SLEEP_LEVEL / 2;
     foodLevel = MAX_FOOD_LEVEL / 2;
@@ -122,9 +126,11 @@ public boolean isAlive() {
 
 //confirms the isAlive() method can determine when monster is dead
 public void depleteLevels(){
+  if (isAlive()) {
   playLevel--;
   foodLevel--;
   sleepLevel--;
+}
 }
 
 //overrides equals
@@ -187,6 +193,20 @@ public void feed(){
   foodLevel++;
 }
 
+//startTimer method
+public void startTimer(){
+  Monster currentMonster = this;
+  TimerTask timerTask = new TimerTask(){
+    @Override
+    public void run() {
+      if (currentMonster.isAlive() == false){
+        cancel();
+      }
+      depleteLevels();
+    }
+  };
+  this.timer.schedule(timerTask, 0, 600);
+}
 
 
 
