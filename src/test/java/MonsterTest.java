@@ -158,14 +158,17 @@ public void feed_increasesMonsterFoodLevel(){
 }
 
 //when user tries to feed the monster to much
+//updated to catch the exception
 @Test
- public void monster_foodLevelCannotGoBeyondMaxValue(){
-   Monster testMonster = new Monster("Bubbles", 1);
-   for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL + 2); i++){
-     testMonster.feed();
-   }
-   assertTrue(testMonster.getFoodLevel() <= Monster.MAX_FOOD_LEVEL);
- }
+public void monster_foodLevelCannotGoBeyondMaxValue(){
+  Monster testMonster = new Monster("Bubbles", 1);
+  for(int i = Monster.MIN_ALL_LEVELS; i <= (Monster.MAX_FOOD_LEVEL); i++){
+    try {
+      testMonster.feed();
+    } catch (UnsupportedOperationException exception){ }
+  }
+  assertTrue(testMonster.getFoodLevel() <= Monster.MAX_FOOD_LEVEL);
+}
 
 //confirms we receive an exception if we attempt to raise our Monsters foodLevel
 @Test (expected = UnsupportedOperationException.class)

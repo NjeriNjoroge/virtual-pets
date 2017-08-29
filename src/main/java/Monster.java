@@ -64,11 +64,6 @@ public void play(){
   sleepLevel++;
 }
 
-//feeding the monsters
-public void feed(){
-   foodLevel++;
- }
-
 //checks whether the monster has died
 public boolean isAlive() {
   if (foodLevel <= MIN_ALL_LEVELS ||
@@ -129,6 +124,7 @@ public static Monster find(int id) {
   }
 }
 
+//updated the feed method
 //throws the exception when a user attempts to raise a pet's foodLevel above the upper limit
 public void feed(){
   if (foodLevel >= MAX_FOOD_LEVEL){
