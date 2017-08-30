@@ -72,13 +72,27 @@ public static Person find(int id) {
 }
 
 //returns all monster objects belonging to a person
-public List<Monster> getMonsters() {
+//updated so that it returns all types of virtual pets
+public List<Object> getMonsters() {
+  List<Object> allMonsters = new ArrayList<Object>();
+
   try(Connection con = DB.sql2o.open()) {
-    String sql = "SELECT * FROM monsters where personId=:id";
-    return con.createQuery(sql)
+    String sqlFire = "SELECT * FROM monsters WHERE personId=:id AND type='fire';";
+    List<FireMonster> fireMonsters = con.createQuery(sqlFire)
       .addParameter("id", this.id)
-      .executeAndFetch(Monster.class);
-  }
+      .throwOnMappingFailure(false) //instructs sql2o not to throw errors if an object database contains an empty column for which it doesn't have a corresponding property
+      .executeAndFetch(FireMonster.class);
+    allMonsters.addAll(fireMonsters);
+
+    String sqlWater = "SELECT * FROM monsters WHERE personId=:id AND type='water';";
+    List<WaterMonster> waterMonsters = con.createQuery(sqlWater)
+      .addParameter("id", this.id)
+      .throwOnMappingFailure(false) //instructs sql2o not to throw errors if an object database contains an empty column for which it doesn't have a corresponding property
+      .executeAndFetch(WaterMonster.class);
+    allMonsters.addAll(waterMonsters);
+    }
+
+    return allMonsters;
 }
 
 }
