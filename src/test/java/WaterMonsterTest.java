@@ -117,13 +117,15 @@ public void isAlive_confirmsWaterMonsterIsAliveIfAllLevelsAboveMinimum_true(){
 }
 
 //confirms the isAlive() method can determine when WaterMonster is dead
+//tests to lower waterLevel
 @Test
 public void depleteLevels_reducesAllLevels(){
-  WaterMonster testWaterMonster = new WaterMonster("Bubbles", 1);
+  WaterMonster testWaterMonster = new WaterMonster("Drippy", 1);
   testWaterMonster.depleteLevels();
   assertEquals(testWaterMonster.getFoodLevel(), (WaterMonster.MAX_FOOD_LEVEL / 2) - 1);
   assertEquals(testWaterMonster.getSleepLevel(), (WaterMonster.MAX_SLEEP_LEVEL / 2) - 1);
   assertEquals(testWaterMonster.getPlayLevel(), (WaterMonster.MAX_PLAY_LEVEL / 2) - 1);
+  assertEquals(testWaterMonster.getWaterLevel(), (WaterMonster.MAX_WATER_LEVEL / 2) - 1);
 }
 
 //confirms the isAlive() method can determine when WaterMonster is dead
@@ -269,6 +271,30 @@ public void timer_haltsAfterWaterMonsterDies() {
   } catch (InterruptedException exception){}
   assertFalse(testWaterMonster.isAlive());
   assertTrue(testWaterMonster.getFoodLevel() >= 0);
+}
+
+//instantiates WaterMonster with half-full levels
+@Test
+ public void waterMonster_instantiatesWithHalfFullWaterLevel(){
+   WaterMonster testWaterMonster = new WaterMonster("Drippy", 1);
+   assertEquals(testWaterMonster.getWaterLevel(), (WaterMonster.MAX_WATER_LEVEL / 2));
+ }
+
+//increases the water level
+@Test
+ public void water_increasesWaterMonsterWaterLevel(){
+   WaterMonster testWaterMonster = new WaterMonster("Drippy", 1);
+   testWaterMonster.water();
+   assertTrue(testWaterMonster.getWaterLevel() > (WaterMonster.MAX_WATER_LEVEL / 2));
+ }
+
+//throws an exception if the waterLevel in maximum
+@Test(expected = UnsupportedOperationException.class)
+public void water_throwsExceptionIfWaterLevelIsAtMaxValue(){
+  WaterMonster testWaterMonster = new WaterMonster("Drippy", 1);
+  for(int i = WaterMonster.MIN_ALL_LEVELS; i <= (WaterMonster.MAX_WATER_LEVEL); i++){
+    testWaterMonster.water();
+  }
 }
 
 

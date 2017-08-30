@@ -5,26 +5,27 @@ import java.sql.Timestamp;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Monster {
-  
+//public class Monster {
+
+public abstract class Monster {
+
   public static final int MAX_FOOD_LEVEL = 3;
   public static final int MAX_SLEEP_LEVEL = 8;
   public static final int MAX_PLAY_LEVEL = 12;
   public static final int MIN_ALL_LEVELS = 0;
 
-  public abstract class Monster {
-    private String name;
-    private int personId;
-    private int id;
-    private int foodLevel;
-    private int sleepLevel;
-    private int playLevel;
-    private Timestamp birthday;
-    private Timestamp lastSlept;
-    private Timestamp lastAte;
-    private Timestamp lastPlayed;
-    private Timer timer;
-  }
+
+    public String name;
+    public int personId;
+    public int id;
+    public int foodLevel;
+    public int sleepLevel;
+    public int playLevel;
+    public Timestamp birthday;
+    public Timestamp lastSlept;
+    public Timestamp lastAte;
+    public Timestamp lastPlayed;
+    public Timer timer;
 
 //gets Monster name
   public String getName(){
@@ -151,24 +152,9 @@ public void save() {
   }
 }
 
-//returns all DB entries
-public static List<Monster> all() {
-  String sql = "SELECT * FROM monsters";
-  try(Connection con = DB.sql2o.open()) {
-    return con.createQuery(sql).executeAndFetch(Monster.class);
-  }
-}
 
-//finding monsters based on id
-public static Monster find(int id) {
-  try(Connection con = DB.sql2o.open()) {
-    String sql = "SELECT * FROM monsters where id=:id";
-    Monster monster = con.createQuery(sql)
-      .addParameter("id", id)
-      .executeAndFetchFirst(Monster.class);
-    return monster;
-  }
-}
+
+
 
 //updated the feed method
 //throws the exception when a user attempts to raise a pet's foodLevel above the upper limit

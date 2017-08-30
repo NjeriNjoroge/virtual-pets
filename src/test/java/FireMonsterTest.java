@@ -117,6 +117,7 @@ public void isAlive_confirmsFireMonsterIsAliveIfAllLevelsAboveMinimum_true(){
 }
 
 //confirms the isAlive() method can determine when FireMonster is dead
+//tests to check the fireLevel
 @Test
 public void depleteLevels_reducesAllLevels(){
   FireMonster testFireMonster = new FireMonster("Bubbles", 1);
@@ -124,6 +125,7 @@ public void depleteLevels_reducesAllLevels(){
   assertEquals(testFireMonster.getFoodLevel(), (FireMonster.MAX_FOOD_LEVEL / 2) - 1);
   assertEquals(testFireMonster.getSleepLevel(), (FireMonster.MAX_SLEEP_LEVEL / 2) - 1);
   assertEquals(testFireMonster.getPlayLevel(), (FireMonster.MAX_PLAY_LEVEL / 2) - 1);
+  assertEquals(testFireMonster.getFireLevel(), (FireMonster.MAX_FIRE_LEVEL / 2) - 1);
 }
 
 //confirms the isAlive() method can determine when FireMonster is dead
@@ -270,6 +272,31 @@ public void timer_haltsAfterFireMonsterDies() {
   assertFalse(testFireMonster.isAlive());
   assertTrue(testFireMonster.getFoodLevel() >= 0);
 }
+
+//fireLevel instantiates at half-full
+@Test
+public void fireMonster_instantiatesWithHalfFullFireLevel(){
+  FireMonster testFireMonster = new FireMonster("Smokey", 1);
+  assertEquals(testFireMonster.getFireLevel(), (FireMonster.MAX_FIRE_LEVEL / 2));
+}
+
+//increases firemonsters fire-level
+@Test
+public void kindling_increasesFireMonsterFireLevel(){
+  FireMonster testFireMonster = new FireMonster("Smokey", 1);
+  testFireMonster.kindling();
+  assertTrue(testFireMonster.getFireLevel() > (FireMonster.MAX_FIRE_LEVEL / 2));
+}
+
+//throws an exception when fireLevel is maxed out
+@Test(expected = UnsupportedOperationException.class)
+public void kindling_throwsExceptionIfFireLevelIsAtMaxValue(){
+  FireMonster testFireMonster = new FireMonster("Smokey", 1);
+  for(int i = FireMonster.MIN_ALL_LEVELS; i <= (FireMonster.MAX_FIRE_LEVEL); i++){
+    testFireMonster.kindling();
+  }
+}
+
 
 
 }
