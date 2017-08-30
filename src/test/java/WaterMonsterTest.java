@@ -297,5 +297,16 @@ public void water_throwsExceptionIfWaterLevelIsAtMaxValue(){
   }
 }
 
+//records the last water interaction for WaterMonster
+@Test
+public void water_recordsTimeLastWaterInDatabase() {
+  WaterMonster testWaterMonster = new WaterMonster("Bubbles", 1);
+  testWaterMonster.save();
+  testWaterMonster.water();
+  Timestamp savedWaterMonsterLastWater = WaterMonster.find(testWaterMonster.getId()).getLastWater();
+  Timestamp rightNow = new Timestamp(new Date().getTime());
+  assertEquals(DateFormat.getDateTimeInstance().format(rightNow), DateFormat.getDateTimeInstance().format(savedWaterMonsterLastWater));
+}
+
 
 }
